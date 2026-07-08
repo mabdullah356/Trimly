@@ -23,7 +23,8 @@ const Urls = () => {
     }, []);
 
     const deleteUrl = async (id: string) => {
-        const res = await axios.delete(`/api/url/${id}`);
+        await axios.delete(`/api/url/${id}`);
+        const res = await axios.get('/api/url');
         setUrls(res.data.urls);
     };
 
