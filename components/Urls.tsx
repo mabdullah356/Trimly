@@ -12,7 +12,7 @@ interface UrlsProps {
 
 const Urls = () => {
     const [urls, setUrls] = useState<UrlsProps[]>([]);
-    const appBaseUrl = process.env.APP_URL || "https://trimly-delta.vercel.app/";
+    const appBaseUrl = process.env.APP_URL || "https://trimly-pro.vercel.app/";
 
     useEffect(() => {
         const fetchUrls = async () => {
@@ -67,6 +67,6 @@ const Urls = () => {
 export default Urls
 
 function copyToClipboard(text: string) {
-    const appBaseUrl = process.env.APP_URL || "https://trimly-delta.vercel.app/";
+    const appBaseUrl = process.env.APP_URL || "https://trimly-pro.vercel.app/";
     navigator.clipboard.writeText(appBaseUrl + "/" + text);
 }
