@@ -17,7 +17,7 @@ const Urls = () => {
     useEffect(() => {
         const fetchUrls = async () => {
             const res = await axios.get('/api/url');
-            setUrls(res.data.urls);
+            setUrls(res.data.urls.sort((a: UrlsProps, b: UrlsProps) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
         };
         const handleUrlCreated = () => {
             fetchUrls();
