@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const HeroSection = () => {
   const { data: session } = useSession();
@@ -18,19 +19,19 @@ const HeroSection = () => {
       const url = new URL(trimmedUrl);
       if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
     } catch {
-      alert("Please enter a valid http or https URL");
+      toast.error("Please enter a valid http or https URL");
       return;
     }
     if (!session) return router.push("/login");
     setLoading(true);
     try {
       const res = await axios.post("/api/url", { originalUrl: trimmedUrl });
-      alert(res.data.message);
+      toast.success(res.data.message);
       window.dispatchEvent(new Event("url-created"));
       console.log(res.data);
     } catch (error: any) {
       console.log(error);
-      alert("Error shortening URL" + error.message);
+      toast.error(`Error shortening URL: ${error.message}`);
     } finally {
       setLoading(false);
       setOriginalUrl("");
