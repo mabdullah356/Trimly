@@ -42,7 +42,7 @@ export default function UrlDetails({ params }: { params: any }) {
         }
     }, [session, id]);
 
-    if (status === "loading" || loading) {
+    if (status === "loading" || loading || !session || session.user.type !== "admin") {
         return <div className="flex h-screen items-center justify-center font-medium bg-white text-gray-400">Loading comprehensive analytics...</div>
     }
 

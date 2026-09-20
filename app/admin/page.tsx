@@ -26,7 +26,7 @@ export default function AdminDashboard() {
         }
     }, [session]);
 
-    if (status === "loading" || !session) return <div className="flex h-screen items-center justify-center font-medium">Verifying Admins Session...</div>
+    if (status === "loading" || !session || session.user.type !== "admin") return <div className="flex h-screen items-center justify-center font-medium">Verifying Admins Session...</div>
 
     return (
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">

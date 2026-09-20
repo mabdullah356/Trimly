@@ -1,9 +1,16 @@
 import { DbConnect } from "@/config/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import ShortUrl from "@/Models/shortUrl.model";
+import { getServerSession } from "next-auth";
+import nextAuthOptions from "@/config/nextAuth";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
+        const session = await getServerSession(nextAuthOptions);
+        if (!session || session.user.type !== "admin") {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
+
         await DbConnect();
         const { id } = await params;
         if (!id) {
