@@ -19,7 +19,16 @@ const Urls = () => {
             const res = await axios.get('/api/url');
             setUrls(res.data.urls);
         };
+        const handleUrlCreated = () => {
+            fetchUrls();
+        };
+
         fetchUrls();
+        window.addEventListener('url-created', handleUrlCreated);
+
+        return () => {
+            window.removeEventListener('url-created', handleUrlCreated);
+        };
     }, []);
 
     const deleteUrl = async (id: string) => {

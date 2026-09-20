@@ -26,6 +26,7 @@ const HeroSection = () => {
     try {
       const res = await axios.post("/api/url", { originalUrl: trimmedUrl });
       alert(res.data.message);
+      window.dispatchEvent(new Event("url-created"));
       console.log(res.data);
     } catch (error: any) {
       console.log(error);
