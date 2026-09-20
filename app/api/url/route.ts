@@ -8,9 +8,17 @@ import authOptions from "@/config/nextAuth";
 export async function POST(request: NextRequest) {
     await DbConnect();
     const { originalUrl } = await request.json();
+    const trimmedUrl = typeof originalUrl === "string" ? originalUrl.trim() : "";
 
-    if (!originalUrl) {
+    if (!trimmedUrl) {
         return NextResponse.json({ message: "Original URL is required" }, { status: 400 });
+    }
+
+    try {
+        const url = new URL(trimmedUrl);
+        if (!["http:", "https:"].includes(url.protocol)) throw new Error();
+    } catch {
+        return NextResponse.json({ message: "A valid http or https URL is required" }, { status: 400 });
     }
 
     try {
@@ -21,7 +29,7 @@ export async function POST(request: NextRequest) {
 
         const newShortUrl = new ShortUrl({
             userId: session.user.id,
-            originalUrl,
+            originalUrl: trimmedUrl,
             shortUrl: nanoid(8),
         });
         await newShortUrl.save();

@@ -13,11 +13,18 @@ const HeroSection = () => {
 
   const handleShorten = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!originalUrl) return;
+    const trimmedUrl = originalUrl.trim();
+    try {
+      const url = new URL(trimmedUrl);
+      if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
+    } catch {
+      alert("Please enter a valid http or https URL");
+      return;
+    }
     if (!session) return router.push("/login");
     setLoading(true);
     try {
-      const res = await axios.post("/api/url", { originalUrl });
+      const res = await axios.post("/api/url", { originalUrl: trimmedUrl });
       alert(res.data.message);
       console.log(res.data);
     } catch (error: any) {
